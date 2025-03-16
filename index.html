@@ -1,0 +1,229 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Türk Televizyonu</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.6/shaka-player.compiled.js"></script>
+    <link rel="stylesheet" href="style/main.css">
+</head>
+<body>
+
+<div class="tv-container">
+    <div class="tv-frame">
+        <div class="screen" id="tv-screen">
+            <video id="video-player" controls playsinline></video>
+            <div class="channel-info" id="channel-info"></div>
+            <div class="channel-input" id="channel-input"></div>
+            <div class="error-message" id="error-message">
+                Channel failed to load. Please try another channel.
+            </div>
+            <div class="volume-indicator" id="volume-indicator"></div>
+            <iframe id="youtube-embed" src="" 
+                style="display:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<div class="remote-container hidden" id="remote-container">
+    <button class="close-button" onclick="hideInterface('remote')">&times;</button>
+    <button class="remote-power" onclick="togglePower()" title="Power"></button>
+    
+    <div class="channel-pad">
+        <button class="remote-button" onclick="inputChannel(1)">1</button>
+        <button class="remote-button" onclick="inputChannel(2)">2</button>
+        <button class="remote-button" onclick="inputChannel(3)">3</button>
+        <button class="remote-button" onclick="inputChannel(4)">4</button>
+        <button class="remote-button" onclick="inputChannel(5)">5</button>
+        <button class="remote-button" onclick="inputChannel(6)">6</button>
+        <button class="remote-button" onclick="inputChannel(7)">7</button>
+        <button class="remote-button" onclick="inputChannel(8)">8</button>
+        <button class="remote-button" onclick="inputChannel(9)">9</button>
+        <button class="remote-button" onclick="inputChannel(0)">0</button>
+    </div>
+    
+    <div class="channel-nav">
+        <div class="volume-controls">
+            <button class="volume-button" onclick="adjustVolume(0.1)">VOL+</button>
+            <button class="volume-button" onclick="adjustVolume(-0.1)">VOL-</button>
+        </div>
+        
+        <div class="channel-controls">
+            <button class="channel-nav-button" onclick="changeChannelRelative(-1)">▲CH</button>
+            <button class="channel-nav-button" onclick="changeChannelRelative(1)">CH▼</button>
+        </div>
+    </div>
+</div>
+
+<button id="toggle-menu" class="toggle-menu-btn">
+    ☰
+</button>
+
+<div class="menu-overlay" id="menu-overlay">
+    <div class="menu-buttons">
+        <button class="menu-option" onclick="toggleInterface('remote')">Remote Control</button>
+        <button class="menu-option" onclick="toggleInterface('channels')">Channel List</button>
+        <button class="menu-option" onclick="toggleInterface('keyboard')">Keyboard Controls</button>
+    </div>
+</div>
+
+<div class="keyboard-overlay" id="keyboard-overlay">
+    <button class="close-button" onclick="hideInterface('keyboard')">&times;</button>
+    <div class="keyboard-guide">
+        <div class="keyboard-guide-title">Keyboard Controls</div>
+        <div class="keyboard-guide-item">
+            <span class="keyboard-guide-key">P</span>
+            <span>Power on/off</span>
+        </div>
+        <div class="keyboard-guide-item">
+            <span class="keyboard-guide-key">↑/↓</span>
+            <span>Change channel</span>
+        </div>
+        <div class="keyboard-guide-item">
+            <span class="keyboard-guide-key">←/→</span>
+            <span>Volume control</span>
+        </div>
+        <div class="keyboard-guide-item">
+            <span class="keyboard-guide-key">0-9</span>
+            <span>Channel number</span>
+        </div>
+        <div class="keyboard-guide-item">
+            <span class="keyboard-guide-key">M</span>
+            <span>Mute/Unmute</span>
+        </div>
+        <div class="keyboard-guide-item">
+            <span class="keyboard-guide-key">L</span>
+            <span>Channel list</span>
+        </div>
+        <div class="keyboard-guide-item">
+            <span class="keyboard-guide-key">R</span>
+            <span>Remote control</span>
+        </div>
+    </div>
+</div>
+
+<div class="channel-list" id="channel-list" style="display: none;">
+    <button class="close-button" onclick="hideInterface('channels')">&times;</button>
+    <h3>Channel List</h3>
+    <div class="channel-categories">
+        <div class="category">
+            <h4>Local Channels</h4>
+            <ul>
+                <li onclick="changeChannel('tv5hd')">1. TV5 HD</li>
+                <li onclick="changeChannel('ptv4')">2. PTV 4</li>
+                <li onclick="changeChannel('ibc13')">3. IBC 13</li>
+                <li onclick="changeChannel('a2z')">4. A2Z</li>
+                <li onclick="changeChannel('buko')">5. Buko</li>
+                <li onclick="changeChannel('sarisari')">6. Sari-Sari</li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h4>News and Information</h4>
+            <ul>
+                <li onclick="changeChannel('oneph2')">7. One PH</li>
+                <li onclick="changeChannel('onenews2')">8. One News</li>
+                <li onclick="changeChannel('rptvhd2')">9. RPTV HD</li>
+                <li onclick="changeChannel('bilyonaryonewschannel')">10. Bilyonaryo News Channel</li>
+                <li onclick="changeChannel('aljazeera')">11. Al Jazeera</li>
+                <li onclick="changeChannel('bloomberg')">12. Bloomberg</li>
+                <li onclick="changeChannel('cna')">13. CNA</li>
+                <li onclick="changeChannel('cnnhd')">14. CNN HD</li>
+                <li onclick="changeChannel('cctv4')">15. CCTV 4</li>
+                <li onclick="changeChannel('france24')">16. France 24</li>
+                <li onclick="changeChannel('bbcnews')">17. BBC News</li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h4>Sports</h4>
+            <ul>
+                <li onclick="changeChannel('premiersportshd')">18. Premier Sports HD</li>
+                <li onclick="changeChannel('spotvhd')">19. SPOTV HD</li>
+                <li onclick="changeChannel('spotv2hd')">20. SPOTV 2 HD</li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h4>Movies</h4>
+            <ul>
+                <li onclick="changeChannel('hbohd')">21. HBO HD</li>
+                <li onclick="changeChannel('hbosignaturehd')">22. HBO Signature HD</li>
+                <li onclick="changeChannel('hbohitshd')">23. HBO Hits HD</li>
+                <li onclick="changeChannel('hbofamilyhd')">24. HBO Family HD</li>
+                <li onclick="changeChannel('cinemaxhd')">25. Cinemax HD</li>
+                <li onclick="changeChannel('hitsmovies')">26. HITS Movies</li>
+                <li onclick="changeChannel('tvnmoviespinoy')">27. tvN Movies Pinoy</li>
+                <li onclick="changeChannel('tapmovieshd')">28. TAP Movies HD</li>
+                <li onclick="changeChannel('tapactionflixhd')">29. Tap Action Flix HD</li>
+                <li onclick="changeChannel('tagalizedmoviechannel')">30. Tagalized Movie Channel</li>
+                <li onclick="changeChannel('vivacinema')">31. Viva Cinema</li>
+                <li onclick="changeChannel('pinoyboxoffice')">32. Pinoy Box Office</li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h4>Kids</h4>
+            <ul>
+                <li onclick="changeChannel('animax')">33. Animax</li>
+                <li onclick="changeChannel('dreamworkshd')">34. DreamWorks HD</li>
+                <li onclick="changeChannel('dreamworkstagalized')">35. DreamWorks (Tagalized)</li>
+                <li onclick="changeChannel('moonbugkids')">36. Moonbug Kids</li>
+                <li onclick="changeChannel('nickelodeonsd')">37. Nickelodeon SD</li>
+                <li onclick="changeChannel('nickjr')">38. Nick Jr</li>
+                <li onclick="changeChannel('cartoonnetworkhd')">39. Cartoon Network HD</li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h4>General Entertainment</h4>
+            <ul>
+                <li onclick="changeChannel('warnertvhd')">40. Warner TV HD</li>
+                <li onclick="changeChannel('tvnpremiumhd')">41. tvN Premium HD</li>
+                <li onclick="changeChannel('kbsworldsd')">42. KBS World SD</li>
+                <li onclick="changeChannel('axn')">43. AXN</li>
+                <li onclick="changeChannel('hitshd')">44. Hits HD</li>
+                <li onclick="changeChannel('hitsnow')">45. HITS Now</li>
+                <li onclick="changeChannel('lifetimesd')">46. Lifetime SD</li>
+                <li onclick="changeChannel('rockentertainment')">47. Rock Entertainment</li>
+                <li onclick="changeChannel('rockextreme')">48. Rock Extreme</li>
+                <li onclick="changeChannel('taptv')">49. Tap TV</li>
+                <li onclick="changeChannel('thrillsd')">50. Thrill SD</li>
+                <li onclick="changeChannel('lotusmacau')">51. Lotus Macau</li>
+                <li onclick="changeChannel('kixhd')">52. Kix HD</li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h4>Lifestyle</h4>
+            <ul>
+                <li onclick="changeChannel('asianfoodnetwork')">53. Asian Food Network</li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h4>Educational & Documentary</h4>
+            <ul>
+                <li onclick="changeChannel('knowledgechannel')">54. Knowledge Channel</li>
+                <li onclick="changeChannel('bbcearthhd')">55. BBC Earth HD</li>
+                <li onclick="changeChannel('discoverychannelsd')">56. Discovery Channel SD</li>
+                <li onclick="changeChannel('animalplanet')">57. Animal Planet</li>
+                <li onclick="changeChannel('travelchannelsd')">58. Travel Channel SD</li>
+                <li onclick="changeChannel('crimeinvestigation')">59. Crime & Investigation</li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h4>Religious Channels</h4>
+            <ul>
+                <li onclick="changeChannel('tvmaria')">60. TV Maria</li>
+                <li onclick="changeChannel('tvup')">61. TVUP</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="script/app.js"></script>
+
+</body>
+</html>
