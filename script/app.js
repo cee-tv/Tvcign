@@ -70,10 +70,12 @@ const channels = {
         }
     },
     bbcnews: {
-        number: 8,
+        number: 7,
         name: "BBC News",
-        url: "https://d2vnbkvjbims7j.cloudfront.net/containerA/LTN/playlist.m3u8",
-        drmConfig: null
+        url: "https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/bbcworld_news_sd.mpd",
+        drmConfig: {
+            clearKeys: {
+                'f59650be475e4c34a844d4e2062f71f3': '119639e849ddee96c4cec2f2b6b09b40'
             }
         }
     },
@@ -219,7 +221,7 @@ const channels = {
     },
     uaapvarsitychannel: {
         number: 23,
-        name: "Uaap Varsity Channel,
+        name: "Uaap Varsity Channel",
         url: "https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/cg_uaap_cplay_sd.mpd",
         drmConfig: {
             clearKeys: {
@@ -851,7 +853,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         const video = document.getElementById('video-player');
         video.volume = currentVolume;
-        changeChannel('tv5hd');
+        changeChannel('a2z');
         // Add click event listener for mobile devices
         video.addEventListener('click', () => {
             if (video.paused) {
